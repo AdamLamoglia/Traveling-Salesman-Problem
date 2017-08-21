@@ -2,7 +2,14 @@
 
 using namespace std;
 
-
+Input& Input::operator=(const Input &in){
+	cout<<"Nao use o operador de atribuicao"<<endl;
+	if (this != &in) {
+		this->capacity_ = in.capacity_;
+		//todo terminar de implementar
+	}
+	return *this;
+}
 
 Input::Input() {
 	name_ = "no name";
@@ -43,75 +50,76 @@ void Input::verifyExplicit(ifstream& inputFile,string s){
 }
 
 //direciona para o construtor do grafo adequado para o tipo de relacao entre os pesos das arestas
-void Input::verifySection(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::verifySection(ifstream& inputFile,Point aux_point){
 
 				if(edge_weight_type_ == "EUC_2D"){
-					makeEUC_2D(inputFile,graph,aux_point);
+					makeEUC_2D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "EUC_3D"){
-					makeEUC_3D(inputFile,graph,aux_point);
+					makeEUC_3D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "MAN_2D"){
-					makeMAN_2D(inputFile,graph,aux_point);
+					makeMAN_2D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "MAN_3D"){
-						makeMAN_3D(inputFile,graph,aux_point);
+						makeMAN_3D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "MAX_2D"){
-						makeMAX_2D(inputFile,graph,aux_point);
+						makeMAX_2D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "MAX_3D"){
-						makeMAX_3D(inputFile,graph,aux_point);
+						makeMAX_3D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "ATT"){
-						makeATT(inputFile,graph,aux_point);
+						makeATT(inputFile,aux_point);
 				}else if(edge_weight_type_ == "GEO"){
-						makeGEO(inputFile,graph,aux_point);
+						makeGEO(inputFile,aux_point);
 				}else if(edge_weight_type_ == "CEIL_2D"){
-						makeCEIL_2D(inputFile,graph,aux_point);
+						makeCEIL_2D(inputFile,aux_point);
 				}else if(edge_weight_type_ == "EXPLICIT"){
 						if(edge_weight_format_ == "FULL_MATRIX"){
-							makeFULL_MATRIX(inputFile,graph);
+							makeFULL_MATRIX(inputFile);
 						}else if(edge_weight_format_ == "UPPER_ROW"){
-							makeUPPER_ROW(inputFile,graph);
+							makeUPPER_ROW(inputFile);
 						}else if(edge_weight_format_ == "LOWER_ROW"){
-							makeLOWER_ROW(inputFile,graph);
+							makeLOWER_ROW(inputFile);
 						}else if(edge_weight_format_ == "UPPER_DIAG_ROW"){
-							makeUPPER_DIAG_ROW(inputFile,graph);
+							makeUPPER_DIAG_ROW(inputFile);
 						}else if(edge_weight_format_ == "LOWER_DIAG_ROW"){
-							makeLOWER_DIAG_ROW(inputFile,graph);
+							makeLOWER_DIAG_ROW(inputFile);
 						}else if(edge_weight_format_ == "UPPER_COL"){
-							makeUPPER_COL(inputFile,graph);
+							makeUPPER_COL(inputFile);
 						}else if(edge_weight_format_ == "LOWER_COL"){
-							makeUPPER_COL(inputFile,graph);
+							makeUPPER_COL(inputFile);
 						}else if(edge_weight_format_ == "UPPER_DIAG_COL"){
-							makeUPPER_DIAG_COL(inputFile,graph);
+							makeUPPER_DIAG_COL(inputFile);
 						}else if(edge_weight_format_ == "LOWER_DIAG_COL"){
-							makeLOWER_DIAG_COL(inputFile,graph);
+							makeLOWER_DIAG_COL(inputFile);
 						}
 				}
 }
 
 
 //Distancia euclidiana 2D
-void Input::makeEUC_2D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeEUC_2D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
 
 	                        inputFile >> aux_point.y;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
+
 						}
 
-						for(int i = 1; i <= graph.dimension_; ++i){
-							graph.addEdgeEUC_2D(i);
+						for (int i = 1; i < graph->dimension_; ++i) {
+							graph->addEdgeEUC_2D(i);
 						}
 
 }
 
 //Distancia euclidiana 3D
-void Input::makeEUC_3D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeEUC_3D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
@@ -120,39 +128,36 @@ void Input::makeEUC_3D(ifstream& inputFile,Graph graph,Point aux_point){
 
 	                        inputFile >> aux_point.z;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-						}
-
-						for(int i = 1; i <= graph.dimension_; ++i){
-							graph.addEdgeEUC_2D(i);
+							graph->addEdgeEUC_2D(index);
 						}
 
 }
 
 //Distancia de manhattan 2D
-void Input::makeMAN_2D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeMAN_2D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
 
 	                        inputFile >> aux_point.y;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeMAN_2D(index);
+							graph->addEdgeMAN_2D(index);
 						}
 
 }
 
 //Distancia de manhattan 3D
-void Input::makeMAN_3D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeMAN_3D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
@@ -161,36 +166,36 @@ void Input::makeMAN_3D(ifstream& inputFile,Graph graph,Point aux_point){
 
 	                        inputFile >> aux_point.z;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeMAN_3D(index);
+							graph->addEdgeMAN_3D(index);
 						}
 
 }
 
 //Distancia maxima 2D
-void Input::makeMAX_2D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeMAX_2D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
 
 	                        inputFile >> aux_point.y;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeMAX_2D(index);
+							graph->addEdgeMAX_2D(index);
 						}
 
 }
 
 //Distancia maxima 3D
-void Input::makeMAX_3D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeMAX_3D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
@@ -199,92 +204,92 @@ void Input::makeMAX_3D(ifstream& inputFile,Graph graph,Point aux_point){
 
 	                        inputFile >> aux_point.z;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeMAX_3D(index);
+							graph->addEdgeMAX_3D(index);
 						}
 
 }
 
 //Distancia pseudo euclidiana 2D
-void Input::makeATT(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeATT(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
 
 	                        inputFile >> aux_point.y;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeATT(index);
+							graph->addEdgeATT(index);
 						}
 
 }
 
 //Distancia geografica
-void Input::makeGEO(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeGEO(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
 
 	                        inputFile >> aux_point.y;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeGEO(index);
+							graph->addEdgeGEO(index);
 						}
 
 }
 
 //Teto da distancia euclidiana 2D
-void Input::makeCEIL_2D(ifstream& inputFile,Graph graph,Point aux_point){
+void Input::makeCEIL_2D(ifstream& inputFile,Point aux_point){
 						int index;
 
-						for (int i = 0; i < graph.dimension_; ++i) {
+						for (int i = 0; i < graph->dimension_; ++i) {
 							inputFile >> index;
 
 							inputFile >> aux_point.x;
 
 	                        inputFile >> aux_point.y;
 
-							graph.coordenate_[index] = aux_point;
+							graph->coordenate_[index] = aux_point;
 
-							graph.addEdgeCEIL_2D(index);
+							graph->addEdgeCEIL_2D(index);
 						}
 
 }
 
 //matriz completa
-void Input::makeFULL_MATRIX(ifstream& inputFile,Graph graph){
+void Input::makeFULL_MATRIX(ifstream& inputFile){
 
-	for (int i = 0; i < graph.dimension_; ++i) {
-			for(int j = 0; j < graph.dimension_; ++j){
+	for (int i = 0; i < graph->dimension_; ++i) {
+			for(int j = 0; j < graph->dimension_; ++j){
 
-				inputFile >> graph.weight_[i][j];
+				inputFile >> graph->weight_[i][j];
 
-				graph.adjacency_[i][j] = j;
+				graph->adjacency_[i][j] = j;
 			}
 		}
 }
 
 //matriz triangular superior em fileira
-void Input::makeUPPER_ROW(ifstream& inputFile,Graph graph){
+void Input::makeUPPER_ROW(ifstream& inputFile){
 		int l = 0, c = 1;
 			//a expressao representa: tamanhoMatriz/2 - diagonalPrincipal
-			for(int i = 0; i < (graph.dimension_*graph.dimension_/2) - graph.dimension_; ++i){
+			for(int i = 0; i < (graph->dimension_*graph->dimension_/2) - graph->dimension_; ++i){
 
-					inputFile >> graph.weight_[l][c];
+					inputFile >> graph->weight_[l][c];
 
-					graph.adjacency_[l][c] = c;
+					graph->adjacency_[l][c] = c;
 
 					//esta na ultima linha
-					if(c == graph.dimension_-1){
+					if(c == graph->dimension_-1){
 						//quando chega na ultima linha, na proxima iteracao l comeca da proxima coluna + 1
 						l++;
 						c = l + 1;
@@ -295,18 +300,18 @@ void Input::makeUPPER_ROW(ifstream& inputFile,Graph graph){
 }
 
 //matriz triangular inferior em fileira
-void Input::makeLOWER_ROW(ifstream& inputFile,Graph graph){
+void Input::makeLOWER_ROW(ifstream& inputFile){
 		int l = 1,c = 0;
 
 		//a expressao representa: tamanhoMatriz/2 - diagonalPrincipal
-		for(int i = 0; i < (graph.dimension_*graph.dimension_/2) - graph.dimension_; ++i){
+		for(int i = 0; i < (graph->dimension_*graph->dimension_/2) - graph->dimension_; ++i){
 
-				inputFile >> graph.weight_[l][c];
+				inputFile >> graph->weight_[l][c];
 
-				graph.adjacency_[l][c] = c;
+				graph->adjacency_[l][c] = c;
 
 				//esta na ultima linha
-				if(l == graph.dimension_-1){
+				if(l == graph->dimension_-1){
 					//quando chega na ultima linha, na proxima iteracao l comeca da proxima coluna + 1
 					c++;
 					l = c + 1;
@@ -317,18 +322,18 @@ void Input::makeLOWER_ROW(ifstream& inputFile,Graph graph){
 }
 
 //matriz triangular superior em fileira incluindo a diagonal principal
-void Input::makeUPPER_DIAG_ROW(ifstream& inputFile,Graph graph){
+void Input::makeUPPER_DIAG_ROW(ifstream& inputFile){
 	int l = 0, c = 0;
 
 	//a expressao representa: tamanhoMatriz/2 - diagonalPrincipal
-	for(int i = 0; i < (graph.dimension_*graph.dimension_/2) - graph.dimension_; ++i){
+	for(int i = 0; i < (graph->dimension_*graph->dimension_/2) - graph->dimension_; ++i){
 
-				inputFile >> graph.weight_[l][c];
+				inputFile >> graph->weight_[l][c];
 
-				graph.adjacency_[l][c] = c;
+				graph->adjacency_[l][c] = c;
 
 				//esta na ultima linha
-				if(c == graph.dimension_-1){
+				if(c == graph->dimension_-1){
 						//quando chega na ultima linha, na proxima iteracao l comeca da proxima coluna + 1
 						l++;
 						c = l;
@@ -339,18 +344,18 @@ void Input::makeUPPER_DIAG_ROW(ifstream& inputFile,Graph graph){
 }
 
 //matriz triangular inferior em fileira incluindo a diagonal principal
-void Input::makeLOWER_DIAG_ROW(ifstream& inputFile,Graph graph){
+void Input::makeLOWER_DIAG_ROW(ifstream& inputFile){
 	int l = 0,c = 0;
 
 	//a expressao representa: tamanhoMatriz/2
-	for(int i = 0; i < (graph.dimension_*graph.dimension_/2); ++i){
+	for(int i = 0; i < (graph->dimension_*graph->dimension_/2); ++i){
 
-			inputFile >> graph.weight_[l][c];
+			inputFile >> graph->weight_[l][c];
 
-			graph.adjacency_[l][c] = c;
+			graph->adjacency_[l][c] = c;
 
 			//esta na ultima linha
-			if(l == graph.dimension_-1){
+			if(l == graph->dimension_-1){
 				//quando chega na ultima linha, na proxima iteracao l comeca no mesmo indice da coluna c
 				c++;
 				l = c;
@@ -361,46 +366,50 @@ void Input::makeLOWER_DIAG_ROW(ifstream& inputFile,Graph graph){
 }
 
 //matriz triangular superior em coluna
-void Input::makeUPPER_COL(ifstream& inputFile,Graph graph){
+void Input::makeUPPER_COL(ifstream& inputFile){
 
 }
 
 //matriz triangular inferior em coluna
-void Input::makeLOWER_COL(ifstream& inputFile,Graph graph){
+void Input::makeLOWER_COL(ifstream& inputFile){
 
 }
 
 //matriz triangular superior em coluna incluindo a diagonal principal
-void Input::makeUPPER_DIAG_COL(ifstream& inputFile,Graph graph){
+void Input::makeUPPER_DIAG_COL(ifstream& inputFile){
 
 }
 
 //matriz triangular inferior em coluna incluindo a diagonal principal
-void Input::makeLOWER_DIAG_COL(ifstream& inputFile,Graph graph){
+void Input::makeLOWER_DIAG_COL(ifstream& inputFile){
 
 }
 
-void Input::makeDemand(ifstream& inputFile,Graph graph){
+void Input::makeDemand(ifstream& inputFile){
 		int index;
 
-		for (int i = 0; i < graph.dimension_; ++i) {
+		for (int i = 0; i < graph->dimension_; ++i) {
 	                    inputFile >> index;
 
-	                    inputFile >> graph.demand_[index];
+	                    inputFile >> graph->demand_[index];
 					}
 }
 
-void Input::makeDepot(ifstream& inputFile,Graph graph){
+void Input::makeDepot(ifstream& inputFile){
 	int index;
 
 	while(inputFile >> index, index != -1){
-	       graph.depot_[index] = index;
+	       graph->depot_[index] = index;
 	}
 }
 
 
 // Faz a leitura do arquivo de entrada e armazena as informacoes necessarias
-void Input::load(ifstream& inputFile) {
+void Input::load(string file_name) {
+
+	ifstream inputFile;
+
+	inputFile.open(file_name.c_str(),ios::in);
 
     //string auxiliar para entrada
 	string s;
@@ -414,7 +423,7 @@ void Input::load(ifstream& inputFile) {
     //getline(inputFile,s);
 
 	if (inputFile.is_open()) {
-            //cout << s << endl;
+           // cout<<"Abril, Maio, Junho..."<<endl;
 
             //NAME
             inputFile >> s;
@@ -458,7 +467,7 @@ void Input::load(ifstream& inputFile) {
             inputFile >> num_vertices_;
 
             //Constroi um novo grafo com a dimensão da entrada
-            Graph graph(num_vertices_);
+            graph = new Graph(num_vertices_);
 
             //EDGE_WEIGHT_TYPE
             inputFile >> s;
@@ -491,18 +500,18 @@ void Input::load(ifstream& inputFile) {
 
             //se s for NODE_COORD_SECTION, entao EDGE_WEIGHT_TYPE eh diferente de explicito, ou seja, eh representado
             //por uma funcao
-             verifySection(inputFile,graph,aux_point);
+             verifySection(inputFile,aux_point);
 
             //DEMAND_SECTION
 			inputFile >> s;
 
-			makeDemand(inputFile,graph);
+			makeDemand(inputFile);
 
 
 			//DEPOT_SECTION
             inputFile >> s;
 
-            makeDepot(inputFile,graph);
+            makeDepot(inputFile);
 
             //EOF
             inputFile >> s;

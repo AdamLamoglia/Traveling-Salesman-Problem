@@ -1,19 +1,30 @@
-#include "tsp.h"
-
+#include "input.h"
+#include "parametros.h"
+#include "solution.h"
 
 using namespace std;
 
-int main(){
+int main(int argc, char*argv[]){
+
+
+	// Arquivo
     Input entrada;
 
-    // Manipulador do arquivo de entrada
+    Parametros::Store(argc,argv);
 
-    //cout<<argv[0]<<" "<<argv[1]<<endl;
+    entrada.load(Parametros::getInstancia());
 
-    ifstream file_("entrada.txt");
+    Solution s(&entrada);
 
-    if(file_.is_open())
-    	entrada.load(file_);
+    cout << "passou" << endl;
 
-    Tsp t()
+    s.greedyNearestNeighbor1(&entrada);
+
+   cout<<s<<endl;
+
+//    Construction c(&entrada);
+
+//    c.builGreedSolution(&s);
+
+    return 0;
 }

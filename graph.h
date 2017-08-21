@@ -21,16 +21,16 @@ using namespace std;
 class Graph{
     public:
     // Dimens�o do grafo
-	static int dimension_;
+	 int dimension_;
 
        //v�rtices do grafo
-	vector<int> vertices_;
+	 vector<int> vertices_;
 
 	// Matriz de Distancia entre clientes
-	vector< vector<int> > adjacency_;
+	 vector< vector<int> > adjacency_;
 
-    //Matriz de pesos das arestas
-	static vector<vector<double> > weight_;
+    /*Matriz de pesos das arestas*/
+	 vector<vector<double> > weight_;
 
     //vetores de latitude e longitude, utilizados para a fun��o GEO
 	vector<int> latitude_;
@@ -50,56 +50,6 @@ class Graph{
 
     //construtor do grafo com o numero de vertices
 	Graph(int num_vertices_);
-
-	int getDimension(){
-			return dimension_;
-		}
-
-	void setDimension(int dimension_) {
-			 this->dimension_ = dimension_;
-		}
-
-	const vector<vector<int> >& getAdjacency() const {
-			return adjacency_;
-		}
-
-	void setAdjacency(const vector<vector<int> >& adjacency) {
-			adjacency_ = adjacency;
-	}
-
-	const vector<int>& getDemand() const {
-			return demand_;
-	}
-
-	void setDemand(const vector<int>& demand) {
-			demand_ = demand;
-	}
-
-	const vector<int>& getDepot() const {
-			return depot_;
-	}
-
-	void setDepot(const vector<int>& depot) {
-			depot_ = depot;
-	}
-
-	const vector<int>& getVertices() const {
-			return vertices_;
-	}
-
-	void setVertices(const vector<int>& vertices) {
-			vertices_ = vertices;
-	}
-
-	const vector<vector<double> >& getWeight() const {
-			return weight_;
-	}
-
-	void setWeight(const vector<vector<double> >& weight) {
-			weight_ = weight;
-	}
-
-
 
 	 //Distancia euclidiana em 2D
 	void addEdgeEUC_2D(int idx);
