@@ -22,9 +22,10 @@ int main(int argc, char*argv[]){
 
    cout<<s<<endl;
 
-//    Construction c(&entrada);
+   s.greedyNearestNeighbor2(&entrada);
 
-//    c.builGreedSolution(&s);
+   cout<<s<<endl;
+
 
     return 0;
 }
