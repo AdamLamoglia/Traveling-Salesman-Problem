@@ -28,9 +28,8 @@ public:
     //vetor virtual
 	vector<int> vertice;
 
-	vector<No> ciclo;
+	vector<int> ciclo;
 
-	vector<No> candidato;
 
 	//distancia minima
 	double min_distance;
@@ -55,18 +54,24 @@ public:
 
 	int indice_vertice_visitado;
 
-    int indice_ciclo;
 
 	//vertice escolhido para ser visitado
 	int vertice_visitado;
 
+	//vertice escolhido para ser incorporado ao ciclo
+	int vertice_incorporado;
+
+	int variacao_comprimento_ciclo;
+
 
 	Solution(Input *in);
-	void setCiclo();
-	void setVerticeVirtual();
+	void setCiclo(Input *in);
+	void setVerticeVirtual(Input *in);
 	void greedyNearestNeighbor1(Input *in);
 	void greedyNearestNeighbor2(Input *in);
-	void InsercaoMaisProxima(Input *in);
+	void insercaoMaisProxima(Input *in);
+	void insercaoMaisDistante(Input *in);
+	void twoOpt(Input *in);
 
 };
 

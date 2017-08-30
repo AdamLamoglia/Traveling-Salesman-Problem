@@ -29,13 +29,11 @@ Solution::Solution(Input *in) {
 	//vetor vai de 1 ate dimensao
 	is_visited.resize(in->graph->dimension_ + 1,false);
 
-	candidato.resize(in->graph->dimension_ + 1);
-
     //constroi o vetor virtual
-    setVerticeVirtual();
+    setVerticeVirtual(in);
 
     //inicializa o ciclo do grafo
-    setCiclo();
+    setCiclo(in);
 
 	//escolhe um numero aleatorio para ser o inicio
 	inicio = rand() % in->graph->dimension_ + 1;
@@ -50,8 +48,6 @@ Solution::Solution(Input *in) {
 
 	indice_vertice_visitado = inicio;
 
-	indice_ciclo = 4;
-
 	//marca o vertice inicial como ja visitado
 	is_visited[vertice_visitado] = true;
 
@@ -61,7 +57,7 @@ Solution::Solution(Input *in) {
 	swap(vertice[1],vertice[indice_vertice_visitado]);
 }
 
-void Solution::setVerticeVirtual(){
+void Solution::setVerticeVirtual(Input *in){
     vertice.resize(in->graph->dimension_ + 1);
 
 	for(int i = 0;i <= in->graph->dimension_; i++){
@@ -69,16 +65,9 @@ void Solution::setVerticeVirtual(){
 	}
 }
 
-void Solution::setCiclo(){
-	ciclo.resize(in->graph->dimension + 1);
+void Solution::setCiclo(Input *in){
+	ciclo.resize(in->graph->dimension_ + 1);
 
-	ciclo[1]->value = 1;
-	ciclo[2]->value = 2;
-	ciclo[3]->value = 3;
-
-	ciclo[1]->color = ciclo[2]->color = ciclo[3]->color = 1;
-
-	min_distance_insercao = in->graph->weight_[1][2] + in->graph->weight_[2][3] + in->graph->weight_[3][1];
 }
 
 
@@ -153,12 +142,60 @@ void Solution::greedyNearestNeighbor2(Input *in){
 	}
 }
 
-void Solution::InsercaoMaisProxima(Input *in){
+void Solution::insercaoMaisProxima(Input *in){
+	ciclo[1] = inicio;
 
-    for(int i = 1;i <= in->graph->dimension_; i++){
-        for(int j = 1;j < cont;j++){
+	int cont = 0;
 
-        }
+	//valor auxiliar
+	min_distance_atual = INT_MAX;
+
+    while(ciclo[ciclo.size() - 1] == 0){
+    	cont = 0;
+
+    	//conta a quantidade de vertices que estao no ciclo
+    	for(int k = 1;k <= ciclo.size();k++){
+
+    		if(ciclo[k] == 0)
+    			break;
+
+    		cont++;
+    	}
+
+    	//escolha do no a ser incorporado ao ciclo
+    	for(int j = 1; j <= in->graph->dimension_; j++){
+
+    			//se o vertice faz parte do ciclo continua o for
+    			if(is_visited[j])
+    				continue;
+
+    			for(int k = 1; k <= cont;k++){
+    				if(in->graph->weight_[j][ciclo[k]] < min_distance_atual){
+    					min_distance_atual = in->graph->weight_[j][ciclo[k]];
+    					vertice_incorporado = j;
+
+    					//so precisa de 1 aresta entre as k arestas para o vertice j ser escolhido
+    					break;
+    				}
+    			}
+    	}
+
+    	//escolha da aresta a ser retirada para incorporar o par de arestas de vertice_incorporado
+    	for(int j = 1;j <= cont; j++){
+    		for(int k = j + 1; k <= cont; k++){
+    			if(in->graph->weight_[vertice_incorporado][j]+in->graph->weight_[vertice_incorporado][k]
+						-in->graph->weight_[j][k] < variacao_comprimento_ciclo){
+    						variacao_comprimento_ciclo = in->graph->weight_[vertice_incorporado][j]+
+    								in->graph->weight_[vertice_incorporado][k]-in->graph->weight_[j][k];
+    			}
+    		}
+    	}
+    	is_visited[vertice_incorporado] = true;
+    	min_distance += variacao_comprimento_ciclo;
+    	ciclo[cont] = vertice_incorporado;
     }
 }
 
+void Solution::insercaoMaisDistante(Input *in){
+
+}
