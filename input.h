@@ -16,10 +16,13 @@ class Input {
 
 public:
 
+	//Grafo que armazena as informaçoes de entrada
+	Graph* graph;
+
 	//nome do arquivo
 	string name_;
 
-	//comentário do arquivo
+	//coment�rio do arquivo
 	string comment_;
 
 	//tipo de problema (VRP,TSP,..)
@@ -40,62 +43,65 @@ public:
 	// Constructor padrao
 	Input();
 
+	// Operador de cópia
+	Input& operator=(const Input &in);
+
 	// Leitura e armazenamento dos dados de entrada
-	void load(ifstream& file_name);
+	void load(string file_name);
 
 	//verifica se EDGE_WEIGHT_TYPE eh EXPLICIT ou nao
 	void verifyExplicit(ifstream &inputFile,string s);
 
 	//construtor do grafo
-	void verifySection(ifstream& inputFile,Graph graph,Point aux_point_);
+	void verifySection(ifstream& inputFile,Point aux_point_);
 
 	//construtores para FUNCTIONS
 
-	void makeEUC_2D(ifstream& inputFile,Graph graph, Point aux_point);
+	void makeEUC_2D(ifstream& inputFile,Point aux_point);
 
-	void makeEUC_3D(ifstream& inputFile,Graph graph, Point aux_point);
+	void makeEUC_3D(ifstream& inputFile,Point aux_point);
 
-	void makeMAN_2D(ifstream& inputFile,Graph graph,Point aux_point);
+	void makeMAN_2D(ifstream& inputFile,Point aux_point);
 
-	void makeMAN_3D(ifstream& inputFile,Graph graph, Point aux_point);
+	void makeMAN_3D(ifstream& inputFile,Point aux_point);
 
-	void makeMAX_2D(ifstream& inputFile,Graph graph, Point aux_point);
+	void makeMAX_2D(ifstream& inputFile,Point aux_point);
 
-	void makeMAX_3D(ifstream& inputFile,Graph graph,Point aux_point);
+	void makeMAX_3D(ifstream& inputFile,Point aux_point);
 
-	void makeATT(ifstream& inputFile,Graph graph,Point aux_point);
+	void makeATT(ifstream& inputFile,Point aux_point);
 
-	void makeGEO(ifstream& inputFile,Graph graph,Point aux_point);
+	void makeGEO(ifstream& inputFile,Point aux_point);
 
-	void makeCEIL_2D(ifstream& inputFile,Graph graph,Point aux_point);
+	void makeCEIL_2D(ifstream& inputFile,Point aux_point);
 
 	//construtores para EXPLICIT
 
-	void makeFULL_MATRIX(ifstream& inputFile,Graph graph);
+	void makeFULL_MATRIX(ifstream& inputFile);
 
-	void makeUPPER_ROW(ifstream& inputFile,Graph graph);
+	void makeUPPER_ROW(ifstream& inputFile);
 
-	void makeLOWER_ROW(ifstream& inputFile,Graph graph);
+	void makeLOWER_ROW(ifstream& inputFile);
 
-	void makeUPPER_DIAG_ROW(ifstream& inputFile,Graph graph);
+	void makeUPPER_DIAG_ROW(ifstream& inputFile);
 
-	void makeLOWER_DIAG_ROW(ifstream& inputFile,Graph graph);
+	void makeLOWER_DIAG_ROW(ifstream& inputFile);
 
-	void makeUPPER_COL(ifstream& inputFile,Graph graph);
+	void makeUPPER_COL(ifstream& inputFile);
 
-	void makeLOWER_COL(ifstream& inputFile,Graph graph);
+	void makeLOWER_COL(ifstream& inputFile);
 
-	void makeUPPER_DIAG_COL(ifstream& inputFile,Graph graph);
+	void makeUPPER_DIAG_COL(ifstream& inputFile);
 
-	void makeLOWER_DIAG_COL(ifstream& inputFile,Graph graph);
+	void makeLOWER_DIAG_COL(ifstream& inputFile);
 
 	//construtor do vetor de demandas
 
-	void makeDemand(ifstream& inputFile,Graph graph);
+	void makeDemand(ifstream& inputFile);
 
 	//construtor do vetor de depositos
 
-	void makeDepot(ifstream& inputFile,Graph graph);
+	void makeDepot(ifstream& inputFile);
 
 
 };
