@@ -1,6 +1,7 @@
 #ifndef PARAMETROS_H_
 #define PARAMETROS_H_
-//#include <omp.h>
+
+#include <omp.h>
 #include <getopt.h>
 #include <iostream>
 #include <string>

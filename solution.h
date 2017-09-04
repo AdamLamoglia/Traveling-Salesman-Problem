@@ -6,7 +6,6 @@
  */
 
 #include "input.h"
-#include "no.h"
 #include <iostream>
 using namespace std;
 
@@ -38,6 +37,9 @@ public:
 
 	//distancia minima atual de cada visitacao
 	double min_distance_atual;
+
+	//para a insercao mais distante
+	double max_distance_atual;
 
 	int aresta_mais_proxima;
 

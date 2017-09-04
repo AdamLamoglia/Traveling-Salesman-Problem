@@ -197,5 +197,59 @@ void Solution::insercaoMaisProxima(Input *in){
 }
 
 void Solution::insercaoMaisDistante(Input *in){
+	ciclo[1] = inicio;
+
+	int cont = 0;
+
+	//valor auxiliar
+	max_distance_atual = INT_MIN;
+
+    while(ciclo[ciclo.size() - 1] == 0){
+    	cont = 0;
+
+    	//conta a quantidade de vertices que estao no ciclo
+    	for(int k = 1;k <= ciclo.size();k++){
+
+    		if(ciclo[k] == 0)
+    			break;
+
+    		cont++;
+    	}
+
+    	//escolha do no a ser incorporado ao ciclo
+    	for(int j = 1; j <= in->graph->dimension_; j++){
+
+    			//se o vertice faz parte do ciclo continua o for
+    			if(is_visited[j])
+    				continue;
+
+    			for(int k = 1; k <= cont;k++){
+    				if(in->graph->weight_[j][ciclo[k]] > max_distance_atual){
+    					max_distance_atual = in->graph->weight_[j][ciclo[k]];
+    					vertice_incorporado = j;
+
+    					//so precisa de 1 aresta entre as k arestas para o vertice j ser escolhido
+    					break;
+    				}
+    			}
+    	}
+
+    	//escolha da aresta a ser retirada para incorporar o par de arestas de vertice_incorporado
+    	for(int j = 1;j <= cont; j++){
+    		for(int k = j + 1; k <= cont; k++){
+    			if(in->graph->weight_[vertice_incorporado][j]+in->graph->weight_[vertice_incorporado][k]
+						-in->graph->weight_[j][k] < variacao_comprimento_ciclo){
+    						variacao_comprimento_ciclo = in->graph->weight_[vertice_incorporado][j]+
+    								in->graph->weight_[vertice_incorporado][k]-in->graph->weight_[j][k];
+    			}
+    		}
+    	}
+    	is_visited[vertice_incorporado] = true;
+    	min_distance += variacao_comprimento_ciclo;
+    	ciclo[cont] = vertice_incorporado;
+    }
+}
+
+void Solution::twoOpt(Input *in){
 
 }
